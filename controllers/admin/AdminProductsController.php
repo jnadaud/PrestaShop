@@ -468,12 +468,14 @@ class AdminProductsControllerCore extends AdminController
         $full_tree = Tools::getValue('fullTree', 0);
         $use_check_box = Tools::getValue('useCheckBox', 1);
         $selected = Tools::getValue('selected', array());
+        $id_tree = Tools::getValue('type');
         $input_name = str_replace(array('[', ']'), '', Tools::getValue('inputName', null));
 
         $tree = new HelperTreeCategories('subtree_associated_categories');
         $tree->setTemplate('subtree_associated_categories.tpl')
             ->setUseCheckBox($use_check_box)
             ->setUseSearch(true)
+            ->setIdTree($id_tree)
             ->setSelectedCategories($selected)
             ->setFullTree($full_tree)
             ->setChildrenOnly(true)
@@ -2542,12 +2544,12 @@ class AdminProductsControllerCore extends AdminController
         $helper->id = 'box-avg-gross-margin';
         $helper->icon = 'icon-tags';
         $helper->color = 'color2';
-        $helper->title = $this->l('Average Gross Margin', null, null, false);
+        $helper->title = $this->l('Average Gross Margin %', null, null, false);
         if (ConfigurationKPI::get('PRODUCT_AVG_GROSS_MARGIN') !== false) {
             $helper->value = ConfigurationKPI::get('PRODUCT_AVG_GROSS_MARGIN');
         }
         $helper->source = $this->context->link->getAdminLink('AdminStats').'&ajax=1&action=getKpi&kpi=product_avg_gross_margin';
-        $helper->tooltip = $this->l('The gross margin is the difference between the retail price and the wholesale price, on all your products for sale.', null, null, false);
+        $helper->tooltip = $this->l('Gross margin expressed in percentage assesses how cost-effectively you sell your goods. Out of $100, you will retain $X to cover profit and expenses.', null, null, false);
         $helper->refresh = (bool)(ConfigurationKPI::get('PRODUCT_AVG_GROSS_MARGIN_EXPIRE') < $time);
         $kpis[] = $helper->generate();
 
